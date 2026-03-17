@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeBuild-IT · Professional Web Solutions</title>
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-soft: #0b1020;
+      --accent: #4f46e5;
+      --accent-soft: rgba(79, 70, 229, 0.12);
+      --accent-strong: rgba(129, 140, 248, 0.18);
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.3);
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --blur-strong: 22px;
+      --transition-fast: 160ms ease-out;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.7);
+      --input-bg: rgba(15, 23, 42, 0.9);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, #22c55e22, transparent 60%),
+        radial-gradient(circle at 100% 0%, #38bdf822, transparent 55%),
+        radial-gradient(circle at 50% 100%, #4f46e522, transparent 55%),
+        linear-gradient(135deg, #020617, #020617, #020617);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .shell { width: 100%; max-width: 980px; position: relative; }
+
+    .glow {
+      position: absolute;
+      inset: -60px;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(56, 189, 248, 0.18), transparent 50%),
+        radial-gradient(circle at 90% 0%, rgba(129, 140, 248, 0.14), transparent 55%);
+      filter: blur(28px);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative;
+      background: radial-gradient(circle at top, #020617, #020617) border-box;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card-inner {
+      position: relative;
+      padding: 26px 26px 22px;
+      background-image:
+        radial-gradient(circle at top left, rgba(148, 163, 184, 0.14), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.9), #020617);
+      backdrop-filter: blur(var(--blur-strong));
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 12px;
+      background:
+        conic-gradient(from 180deg at 50% 50%, #4f46e5, #22c55e, #06b6d4, #4f46e5);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.65);
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: 11px;
+      background: radial-gradient(circle at 30% 0%, #111827, #020617 70%);
+    }
+
+    .brand-initial {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #e5e7eb;
+    }
+
+    .brand-text-main {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      padding: 2px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      gap: 2px;
+    }
+
+    .lang-btn {
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 4px 10px 5px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background var(--transition-fast), color var(--transition-fast),
+        transform 90ms ease-out;
+    }
+
+    .lang-btn span.flag { font-size: 11px; opacity: 0.85; }
+
+    .lang-btn.active {
+      background: linear-gradient(135deg, #4f46e5, #22c55e);
+      color: #f9fafb;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 1);
+    }
+
+    .lang-btn:not(.active):hover {
+      background: rgba(15, 23, 42, 0.94);
+      color: #e5e7eb;
+      transform: translateY(-0.5px);
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr);
+      gap: 26px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .card-inner { padding: 18px 18px 16px; }
+      .content {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+      }
+    }
+
+    .headline { margin-bottom: 10px; }
+
+    .title {
+      font-size: clamp(22px, 2.4vw, 26px);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+
+    .subtitle {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: #e5e7eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22);
+    }
+
+    .services {
+      margin-top: 18px;
+      padding: 10px 0 0;
+      border-top: 1px solid rgba(148, 163, 184, 0.42);
+      display: grid;
+      gap: 8px;
+    }
+
+    .service-item {
+      padding: 7px 10px;
+      border-radius: 10px;
+      background: radial-gradient(circle at top left, var(--accent-soft), transparent 65%);
+      border: 1px solid rgba(148, 163, 184, 0.32);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #e5e7eb;
+    }
+
+    .service-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+    }
+
+    .service-label { font-weight: 500; }
+
+    .side {
+      border-radius: 14px;
+      padding: 14px 14px 12px;
+      background: radial-gradient(circle at top, var(--accent-strong), #020617);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .side-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .side-title {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 9px;
+      background: #22c55e;
+    }
+
+    .side-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .contact-block {
+      margin-top: 4px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(148, 163, 184, 0.45);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .contact-label {
+      min-width: 78px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: #9ca3af;
+    }
+
+    a {
+      color: #e5e7eb;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+      transition: border-color var(--transition-fast), color var(--transition-fast),
+        opacity 130ms ease-out;
+    }
+
+    a:hover {
+      border-color: rgba(248, 250, 252, 0.7);
+      color: #f9fafb;
+    }
+
+    .footer {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(15, 23, 42, 0.95);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .footer span { opacity: 0.85; }
+
+    /* === Quote form === */
+    .quote-form {
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .form-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: #9ca3af;
+    }
+
+    .form-help {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: var(--input-bg);
+      color: #e5e7eb;
+      font-size: 12px;
+      padding: 7px 9px;
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
+        background-color var(--transition-fast), transform 90ms ease-out;
+      resize: vertical;
+      min-height: 34px;
+    }
+
+    .form-textarea { min-height: 72px; }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      border-color: #a5b4fc;
+      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.8);
+      transform: translateY(-0.5px);
+      background: #020617;
+    }
+
+    .form-row-inline {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .form-row-inline {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .form-actions {
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .form-button {
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 7px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: linear-gradient(135deg, #4f46e5, #22c55e);
+      color: #f9fafb;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 12px 25px rgba(34, 197, 94, 0.45);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+        filter var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .form-button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 16px 32px rgba(79, 70, 229, 0.55);
+    }
+
+    .form-button:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.9);
+    }
+
+    .form-note {
+      font-size: 10px;
+      color: #6b7280;
+      max-width: 240px;
+    }
+
+    .form-status {
+      margin-top: 4px;
+      font-size: 11px;
+      color: #a5b4fc;
+      display: none;
+    }
+
+    .form-status.visible { display: block; }
+
+    [data-lang] { display: none; }
+    [data-lang].active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="glow"></div>
+    <main class="card" aria-label="WeBuild-IT landing">
+      <div class="card-inner">
+        <header class="card-top">
+          <div class="brand">
+            <div class="brand-mark">
+              <div class="brand-initial">WB</div>
+            </div>
+            <div>
+              <div class="brand-text-main">WeBuild‑IT</div>
+              <div class="brand-text-sub" data-lang="en" class="active">
+                Cloud · Web · Automation
+              </div>
+              <div class="brand-text-sub" data-lang="ro">
+                Cloud · Web · Automatizare
+              </div>
+              <div class="brand-text-sub" data-lang="ru">
+                Облако · Веб · Автоматизация
+              </div>
+            </div>
+          </div>
+          <nav class="lang-switch" aria-label="Language selector">
+            <button class="lang-btn active" data-set-lang="en" type="button">
+              <span class="flag">EN</span> EN
+            </button>
+            <button class="lang-btn" data-set-lang="ro" type="button">
+              <span class="flag">RO</span> RO
+            </button>
+            <button class="lang-btn" data-set-lang="ru" type="button">
+              <span class="flag">RU</span> RU
+            </button>
+          </nav>
+        </header>
+
+        <section class="content">
+          <!-- Left column: description & services -->
+          <section>
+            <div class="headline" data-lang="en" class="active">
+              <h1 class="title">Professional Web & DevOps Partner</h1>
+              <p class="subtitle">
+                Focused on reliable infrastructure, maintainable code and calm operations
+                for modern digital products.
+              </p>
+            </div>
+            <div class="headline" data-lang="ro">
+              <h1 class="title">Partenerul tău Web & DevOps</h1>
+              <p class="subtitle">
+                Ne concentrăm pe infrastructură stabilă, cod ușor de întreținut și
+                operațiuni liniștite pentru produse digitale moderne.
+              </p>
+            </div>
+            <div class="headline" data-lang="ru">
+              <h1 class="title">Ваш партнёр по Web и DevOps</h1>
+              <p class="subtitle">
+                Фокус на надёжной инфраструктуре, поддерживаемом коде и спокойных
+                операциях для современных цифровых продуктов.
+              </p>
+            </div>
+
+            <div class="pill-row" data-lang="en" class="active">
+              <div class="pill">
+                <span class="pill-dot"></span>
+                Managed WordPress & Hosting
+              </div>
+              <div class="pill">
+                CI/CD pipelines · GitOps
+              </div>
+              <div class="pill">
+                Long‑term care for production systems
+              </div>
+            </div>
+
+            <div class="pill-row" data-lang="ro">
+              <div class="pill">
+                <span class="pill-dot"></span>
+                WordPress & Hosting gestionat
+              </div>
+              <div class="pill">
+                Pipeline‑uri CI/CD · GitOps
+              </div>
+              <div class="pill">
+                Îngrijire pe termen lung pentru producție
+              </div>
+            </div>
+
+            <div class="pill-row" data-lang="ru">
+              <div class="pill">
+                <span class="pill-dot"></span>
+                Управляемый WordPress и хостинг
+              </div>
+              <div class="pill">
+                CI/CD‑конвейеры · GitOps
+              </div>
+              <div class="pill">
+                Долгосрочная поддержка продакшн‑систем
+              </div>
+            </div>
+
+            <div class="services" data-lang="en" class="active" aria-label="Services">
+              <div class="service-item">
+                <div class="service-icon">WP</div>
+                <div>
+                  <div class="service-label">WordPress development & care</div>
+                  <div class="service-description">
+                    Custom themes, performance tuning, security‑first maintenance.
+                  </div>
+                </div>
+              </div>
+              <div class="service-item">
+                <div class="service-icon">CI</div>
+                <div>
+                  <div class="service-label">CI/CD & automation</div>
+                  <div class="service-description">
+                    Git‑based deployments, testing pipelines, safe rollbacks.
+                  </div>
+                </div>
+              </div>
+              <div class="service-item">
+                <div class="service-icon">OPS</div>
+                <div>
+                  <div class="service-label">Managed infrastructure</div>
+                  <div class="service-description">
+                    Hardening, monitoring and backups for production workloads.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="services" data-lang="ro">
+              <div class="service-item">
+                <div class="service-icon">WP</div>
+                <div>
+                  <div class="service-label">Dezvoltare & mentenanță WordPress</div>
+                  <div class="service-description">
+                    Teme custom, optimizare de performanță, mentenanță cu focus pe securitate.
+                  </div>
+                </div>
+              </div>
+              <div class="service-item">
+                <div class="service-icon">CI</div>
+                <div>
+                  <div class="service-label">CI/CD & automatizare</div>
+                  <div class="service-description">
+                    Deploy‑uri pe bază de Git, pipeline‑uri de testare, rollback sigur.
+                  </div>
+                </div>
+              </div>
+              <div class="service-item">
+                <div class="service-icon">OPS</div>
+                <div>
+                  <div class="service-label">Infrastructură administrată</div>
+                  <div class="service-description">
+                    Hardening, monitorizare și backup‑uri pentru medii de producție.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="services" data-lang="ru">
+              <div class="service-item">
+                <div class="service-icon">WP</div>
+                <div>
+                  <div class="service-label">Разработка и поддержка WordPress</div>
+                  <div class="service-description">
+                    Кастомные темы, оптимизация производительности, безопасность.
+                  </div>
+                </div>
+              </div>
+              <div class="service-item">
+                <div class="service-icon">CI</div>
+                <div>
+                  <div class="service-label">CI/CD и автоматизация</div>
+                  <div class="service-description">
+                    Деплой через Git, тестовые конвейеры, безопасные откаты.
+                  </div>
+                </div>
+              </div>
+              <div class="service-item">
+                <div class="service-icon">OPS</div>
+                <div>
+                  <div class="service-label">Управляемая инфраструктура</div>
+                  <div class="service-description">
+                    Защита, мониторинг и резервное копирование продакшн‑среды.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Right column: environment + quote form -->
+          <aside class="side">
+            <div class="side-header" data-lang="en" class="active">
+              <div class="side-title">Production environment</div>
+              <div class="badge">
+                <span class="badge-dot"></span>
+                Calm operations
+              </div>
+            </div>
+            <div class="side-header" data-lang="ro">
+              <div class="side-title">Mediu de producție</div>
+              <div class="badge">
+                <span class="badge-dot"></span>
+                Operare stabilă
+              </div>
+            </div>
+            <div class="side-header" data-lang="ru">
+              <div class="side-title">Продакшн‑среда</div>
+              <div class="badge">
+                <span class="badge-dot"></span>
+                Спокойная эксплуатация
+              </div>
+            </div>
+
+            <p class="side-text" data-lang="en" class="active">
+              This endpoint is part of the infrastructure used for client projects
+              and managed hosting by WeBuild‑IT.
+            </p>
+            <p class="side-text" data-lang="ro">
+              Acest endpoint face parte din infrastructura folosită pentru proiectele
+              clienților și hostingul administrat de WeBuild‑IT.
+            </p>
+            <p class="side-text" data-lang="ru">
+              Эта точка доступа является частью инфраструктуры, используемой для
+              клиентских проектов и управляемого хостинга WeBuild‑IT.
+            </p>
+
+            <div class="contact-block">
+              <div class="contact-row" data-lang="en" class="active">
+                <div class="contact-label">Email</div>
+                <div>
+                  <a href="mailto:admin@webuild-it.com">admin@webuild-it.com</a>
+                </div>
+              </div>
+              <div class="contact-row" data-lang="ro">
+                <div class="contact-label">Email</div>
+                <div>
+                  <a href="mailto:admin@webuild-it.com">admin@webuild-it.com</a>
+                </div>
+              </div>
+              <div class="contact-row" data-lang="ru">
+                <div class="contact-label">Email</div>
+                <div>
+                  <a href="mailto:admin@webuild-it.com">admin@webuild-it.com</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quote form -->
+            <form class="quote-form" id="quoteForm">
+              <div class="form-row" data-lang="en" class="active">
+                <div class="form-label">Request a project quote</div>
+                <div class="form-help">
+                  A short message is enough. We follow up by email.
+                </div>
+              </div>
+              <div class="form-row" data-lang="ro">
+                <div class="form-label">Cere o ofertă pentru proiect</div>
+                <div class="form-help">
+                  Un mesaj scurt este suficient. Revenim prin e‑mail.
+                </div>
+              </div>
+              <div class="form-row" data-lang="ru">
+                <div class="form-label">Запросить предложение по проекту</div>
+                <div class="form-help">
+                  Краткого описания достаточно. Мы ответим по e‑mail.
+                </div>
+              </div>
+
+              <div class="form-row form-row-inline">
+                <div class="form-row">
+                  <label class="form-label" for="qName" data-lang="en" class="active">Name</label>
+                  <label class="form-label" for="qName" data-lang="ro">Nume</label>
+                  <label class="form-label" for="qName" data-lang="ru">Имя</label>
+                  <input id="qName" name="name" class="form-input" type="text" autocomplete="name" />
+                </div>
+
+                <div class="form-row">
+                  <label class="form-label" for="qEmail" data-lang="en" class="active">Email</label>
+                  <label class="form-label" for="qEmail" data-lang="ro">Email</label>
+                  <label class="form-label" for="qEmail" data-lang="ru">Email</label>
+                  <input id="qEmail" name="email" class="form-input" type="email" autocomplete="email" required />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <label class="form-label" for="qType" data-lang="en" class="active">Project type</label>
+                <label class="form-label" for="qType" data-lang="ro">Tip proiect</label>
+                <label class="form-label" for="qType" data-lang="ru">Тип проекта</label>
+                <select id="qType" name="type" class="form-select">
+                  <option value="" data-lang="en" class="active">Choose…</option>
+                  <option value="" data-lang="ro">Alege…</option>
+                  <option value="" data-lang="ru">Выберите…</option>
+
+                  <option value="wordpress" data-lang="en" class="active">WordPress site</option>
+                  <option value="wordpress" data-lang="ro">Site WordPress</option>
+                  <option value="wordpress" data-lang="ru">Сайт на WordPress</option>
+
+                  <option value="hosting" data-lang="en" class="active">Managed hosting</option>
+                  <option value="hosting" data-lang="ro">Hosting administrat</option>
+                  <option value="hosting" data-lang="ru">Управляемый хостинг</option>
+
+                  <option value="cicd" data-lang="en" class="active">CI/CD & automation</option>
+                  <option value="cicd" data-lang="ro">CI/CD & automatizare</option>
+                  <option value="cicd" data-lang="ru">CI/CD и автоматизация</option>
+
+                  <option value="other" data-lang="en" class="active">Other / mixed</option>
+                  <option value="other" data-lang="ro">Alt tip / mixt</option>
+                  <option value="other" data-lang="ru">Другое / смешанное</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <label class="form-label" for="qMessage" data-lang="en" class="active">Short description</label>
+                <label class="form-label" for="qMessage" data-lang="ro">Descriere scurtă</label>
+                <label class="form-label" for="qMessage" data-lang="ru">Краткое описание</label>
+                <textarea id="qMessage" name="message" class="form-textarea"></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="form-button">
+                  <span data-lang="en" class="active">Send request</span>
+                  <span data-lang="ro">Trimite cererea</span>
+                  <span data-lang="ru">Отправить запрос</span>
+                </button>
+                <div class="form-note" data-lang="en" class="active">
+                  The form will open your mail client with all details pre‑filled.
+                </div>
+                <div class="form-note" data-lang="ro">
+                  Formularul va deschide clientul tău de e‑mail cu detaliile completate.
+                </div>
+                <div class="form-note" data-lang="ru">
+                  Форма откроет ваш почтовый клиент с уже заполненными данными.
+                </div>
+              </div>
+
+              <div id="formStatus" class="form-status" data-lang="en">
+                If nothing happens, please write directly to: admin@webuild-it.com
+              </div>
+              <div id="formStatusRo" class="form-status" data-lang="ro">
+                Dacă nu se întâmplă nimic, scrie‑ne direct la: admin@webuild-it.com
+              </div>
+              <div id="formStatusRu" class="form-status" data-lang="ru">
+                Если ничего не произошло, напишите напрямую на: admin@webuild-it.com
+              </div>
+            </form>
+          </aside>
+        </section>
+
+        <footer class="footer">
+          <span data-lang="en" class="active">
+            © 2025 WeBuild‑IT. Reliable infrastructure for human‑scale businesses.
+          </span>
+          <span data-lang="ro">
+            © 2025 WeBuild‑IT. Infrastructură fiabilă pentru afaceri umane.
+          </span>
+          <span data-lang="ru">
+            © 2025 WeBuild‑IT. Надёжная инфраструктура для живых бизнесов.
+          </span>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const DEFAULT_LANG = "en";
+      const saved =
+        (typeof window !== "undefined" &&
+          window.localStorage &&
+          window.localStorage.getItem("wb_lang")) ||
+        DEFAULT_LANG;
+
+      function setLang(lang) {
+        const blocks = document.querySelectorAll("[data-lang]");
+        blocks.forEach((el) => {
+          el.classList.toggle("active", el.getAttribute("data-lang") === lang);
+        });
+
+        const switchers = document.querySelectorAll("[data-set-lang]");
+        switchers.forEach((btn) => {
+          btn.classList.toggle("active", btn.getAttribute("data-set-lang") === lang);
+        });
+
+        try {
+          window.localStorage.setItem("wb_lang", lang);
+        } catch (_) {}
+      }
+
+      document.addEventListener("click", (e) => {
+        const target = e.target.closest("[data-set-lang]");
+        if (!target) return;
+        const lang = target.getAttribute("data-set-lang");
+        if (!lang) return;
+        setLang(lang);
+      });
+
+      setLang(saved);
+    })();
+
+    // Quote form: build a mailto with prefilled content
+    (function () {
+      const form = document.getElementById("quoteForm");
+      if (!form) return;
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById("qName").value.trim();
+        const email = document.getElementById("qEmail").value.trim();
+        const type = document.getElementById("qType").value;
+        const message = document.getElementById("qMessage").value.trim();
+
+        const lang =
+          (typeof window !== "undefined" &&
+            window.localStorage &&
+            window.localStorage.getItem("wb_lang")) || "en";
+
+        let subject;
+        if (lang === "ro") {
+          subject = "Cerere ofertă – WeBuild-IT";
+        } else if (lang === "ru") {
+          subject = "Запрос предложения – WeBuild-IT";
+        } else {
+          subject = "Project quote request – WeBuild-IT";
+        }
+
+        let bodyLines = [];
+
+        if (lang === "ro") {
+          bodyLines.push("Detalii cerere ofertă:");
+          bodyLines.push("");
+          bodyLines.push("Nume: " + (name || "-"));
+          bodyLines.push("Email: " + (email || "-"));
+          bodyLines.push("Tip proiect: " + (type || "-"));
+          bodyLines.push("");
+          bodyLines.push("Descriere:");
+          bodyLines.push(message || "-");
+        } else if (lang === "ru") {
+          bodyLines.push("Детали запроса предложения:");
+          bodyLines.push("");
+          bodyLines.push("Имя: " + (name || "-"));
+          bodyLines.push("Email: " + (email || "-"));
+          bodyLines.push("Тип проекта: " + (type || "-"));
+          bodyLines.push("");
+          bodyLines.push("Описание:");
+          bodyLines.push(message || "-");
+        } else {
+          bodyLines.push("Quote request details:");
+          bodyLines.push("");
+          bodyLines.push("Name: " + (name || "-"));
+          bodyLines.push("Email: " + (email || "-"));
+          bodyLines.push("Project type: " + (type || "-"));
+          bodyLines.push("");
+          bodyLines.push("Description:");
+          bodyLines.push(message || "-");
+        }
+
+        const body = encodeURIComponent(bodyLines.join("\n"));
+        const subj = encodeURIComponent(subject);
+        const mailto = "mailto:admin@webuild-it.com?subject=" + subj + "&body=" + body;
+
+        // Try to open mail client
+        window.location.href = mailto;
+
+        // Show fallback hint
+        const statusEn = document.getElementById("formStatus");
+        const statusRo = document.getElementById("formStatusRo");
+        const statusRu = document.getElementById("formStatusRu");
+        [statusEn, statusRo, statusRu].forEach((el) => el && el.classList.remove("visible"));
+
+        if (lang === "ro" && statusRo) statusRo.classList.add("visible");
+        else if (lang === "ru" && statusRu) statusRu.classList.add("visible");
+        else if (statusEn) statusEn.classList.add("visible");
+      });
+    })();
+  </script>
+</body>
+</html>
