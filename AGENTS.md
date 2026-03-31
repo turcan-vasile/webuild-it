@@ -15,3 +15,11 @@ Public static site workload and deployment manifests.
 ## Task Memory
 Use matrix source-of-truth:
 - `/home/ja/repos/ja-ops-home/snapshot/docs/ai/tasks.yaml`
+
+## Skills First
+For repeatable and risky workflows, run project skills before ad-hoc operations.
+
+## Beads Memory
+Use Beads (`bd`) for long-horizon task graph tracking and dependencies.
+Primary workspace: `/home/ja/beads-workspace`.
+Sync exports via `/home/ja/repos/ja-ops-home/scripts/beads-sync.sh`.
