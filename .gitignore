@@ -3,3 +3,7 @@
 .env.*
 dist/
 node_modules/
+# Local Codex guidance files
+/AGENTS.md
+/CODEX.md
+/docs/ai/session-resume.md
