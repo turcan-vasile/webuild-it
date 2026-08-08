@@ -1,6 +1,20 @@
 # webuild-it
 
-`webuild-it.com` is the public home for infrastructure, CI/CD, automation, and systems work under the `WeBuild-IT` brand.
+`webuild-it.com` is the public home for infrastructure, CI/CD, automation, AI-assisted development, and systems work under the **WeBuildit** brand.
+
+> **We build useful things together.**
+
+## Brand & Storytelling
+
+The living source of truth for the WeBuildit story, community direction, editorial lanes, and proof-of-work content is kept separately from engineering backlog work:
+
+- [Brand & Storytelling Hub](docs/brand/README.md)
+- [Origin Story](docs/brand/ORIGIN-STORY.md)
+- [Community Vision](docs/brand/COMMUNITY-VISION.md)
+- [Content Seeds](docs/brand/CONTENT-SEEDS.md)
+- [Case Study Framework](docs/brand/CASE-STUDY-FRAMEWORK.md)
+
+These documents are **brand/storytelling memory**, not implementation issues or engineering authorization.
 
 ## Phase 1
 
@@ -34,7 +48,7 @@ make docker-build
 
 ## Kubernetes
 
-The repository already includes a simple base manifest set in [k8s/base](/home/ja/repos/webuild-it/k8s/base).
+The repository already includes a simple base manifest set in [k8s/base](k8s/base).
 
 Expected production hostnames:
 
@@ -43,4 +57,4 @@ Expected production hostnames:
 
 ## Roadmap
 
-See [docs/ARCHITECTURE.md](/home/ja/repos/webuild-it/docs/ARCHITECTURE.md).
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
