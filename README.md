@@ -18,10 +18,13 @@ These documents are **brand/storytelling memory**, not implementation issues or 
 
 ## Phase 1
 
-This repository starts as a **static business card site**:
+This repository contains a lightweight multilingual landing page and narrowly scoped contact service:
 
 - lightweight;
-- easy to deploy on the same production Kubernetes cluster as `ra-planet.com`;
+- one dependency-free Go binary serving static assets and `/api/contact`;
+- EN / RO / RU content from one semantic page;
+- server-side SMTP delivery with credentials supplied only at runtime;
+- easy to deploy in the existing Kubernetes workload;
 - safe to evolve later into an authenticated online dashboard.
 
 ## Deployment Model
@@ -29,7 +32,7 @@ This repository starts as a **static business card site**:
 - separate app from `ra-planet.com`
 - separate ingress and TLS
 - same production cluster
-- static Nginx container now
+- single non-root application container
 - richer app later
 
 ## Local Usage
@@ -38,7 +41,18 @@ This repository starts as a **static business card site**:
 make serve
 ```
 
-Visit `http://127.0.0.1:8088`.
+Visit `http://127.0.0.1:8080`.
+
+Without SMTP environment variables the site remains available and the contact
+API returns a clear `503` response. See [docs/CONTACT.md](docs/CONTACT.md) for
+the runtime secret contract and validation flow.
+
+## Validation
+
+```bash
+make verify
+make docker-build
+```
 
 ## Container
 
