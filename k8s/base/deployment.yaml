@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: webuild-it
-          image: ghcr.io/turcan-vasile/webuild-it:latest
+          image: ghcr.io/turcan-vasile/webuild-it:sha-8ee4cce
           ports:
             - name: http
               containerPort: 8080
