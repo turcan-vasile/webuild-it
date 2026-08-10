@@ -191,6 +191,19 @@ func TestStaticHandlerAndSecurityHeaders(t *testing.T) {
 	}
 }
 
+func TestStaticHandlerServesWebManifestWithManifestContentType(t *testing.T) {
+	request := httptest.NewRequest(http.MethodGet, "/assets/brand/site.webmanifest", nil)
+	response := httptest.NewRecorder()
+	newHandler(testConfig(), &recordingSender{}).ServeHTTP(response, request)
+
+	if response.Code != http.StatusOK {
+		t.Fatalf("status = %d", response.Code)
+	}
+	if contentType := response.Header().Get("Content-Type"); contentType != "application/manifest+json" {
+		t.Fatalf("content type = %q", contentType)
+	}
+}
+
 func TestBuildMessageUsesFixedEnvelopeAndSafeReplyTo(t *testing.T) {
 	request := contactRequest{
 		Name: "Ana Example", Email: "ana@example.com", Company: "Example",

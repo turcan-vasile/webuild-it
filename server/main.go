@@ -470,6 +470,9 @@ func (a *app) static() http.Handler {
 		} else {
 			w.Header().Set("Cache-Control", "no-cache")
 		}
+		if filepath.Ext(candidate) == ".webmanifest" {
+			w.Header().Set("Content-Type", "application/manifest+json")
+		}
 		http.ServeFile(w, r, candidate)
 	})
 }

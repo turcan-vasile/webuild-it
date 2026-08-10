@@ -5,6 +5,7 @@
     en: {
       "meta.title": "WeBuildit — AI, Automation & Digital Systems",
       "meta.description": "WeBuildit builds practical AI-assisted solutions, automation, digital products and reliable infrastructure for real businesses and ideas.",
+      "meta.imageAlt": "WeBuildit — We build useful things together.",
       "a11y.skip": "Skip to main content",
       "a11y.primaryNav": "Primary navigation",
       "a11y.language": "Choose language",
@@ -55,6 +56,7 @@
     ro: {
       "meta.title": "WeBuildit — AI, automatizare și sisteme digitale",
       "meta.description": "WeBuildit construiește soluții practice asistate de AI, automatizări, produse digitale și infrastructură fiabilă pentru afaceri și idei reale.",
+      "meta.imageAlt": "WeBuildit — Construim împreună lucruri utile.",
       "a11y.skip": "Sari la conținutul principal", "a11y.primaryNav": "Navigare principală", "a11y.language": "Alege limba",
       "nav.build": "Ce construim", "nav.work": "Cum lucrăm", "nav.why": "De ce WeBuildit", "nav.contact": "Contact",
       "hero.eyebrow": "AI • Automatizare • Sisteme digitale", "hero.title": "Construim împreună lucruri utile.",
@@ -97,6 +99,7 @@
     ru: {
       "meta.title": "WeBuildit — ИИ, автоматизация и цифровые системы",
       "meta.description": "WeBuildit создаёт практичные решения с применением ИИ, автоматизацию, цифровые продукты и надёжную инфраструктуру для реального бизнеса и идей.",
+      "meta.imageAlt": "WeBuildit — Мы вместе создаём полезные вещи.",
       "a11y.skip": "Перейти к основному содержанию", "a11y.primaryNav": "Основная навигация", "a11y.language": "Выбрать язык",
       "nav.build": "Что мы создаём", "nav.work": "Как мы работаем", "nav.why": "Почему WeBuildit", "nav.contact": "Контакты",
       "hero.eyebrow": "ИИ • Автоматизация • Цифровые системы", "hero.title": "Мы вместе создаём полезные вещи.",
@@ -156,8 +159,10 @@
     document.querySelector('meta[name="description"]').setAttribute("content", dictionary["meta.description"]);
     document.querySelector('meta[property="og:title"]').setAttribute("content", dictionary["meta.title"]);
     document.querySelector('meta[property="og:description"]').setAttribute("content", dictionary["meta.description"]);
+    document.querySelector('meta[property="og:image:alt"]').setAttribute("content", dictionary["meta.imageAlt"]);
     document.querySelector('meta[name="twitter:title"]').setAttribute("content", dictionary["meta.title"]);
     document.querySelector('meta[name="twitter:description"]').setAttribute("content", dictionary["meta.description"]);
+    document.querySelector('meta[name="twitter:image:alt"]').setAttribute("content", dictionary["meta.imageAlt"]);
   };
 
   const setLanguage = (language, persist = true) => {
