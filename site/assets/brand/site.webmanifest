@@ -1,0 +1,19 @@
+{
+  "name": "WeBuildit",
+  "short_name": "WeBuildit",
+  "icons": [
+    {
+      "src": "/assets/brand/webuildit-mark-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/brand/webuildit-mark-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#071412",
+  "background_color": "#071412",
+  "display": "standalone"
+}

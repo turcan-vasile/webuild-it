@@ -17,11 +17,33 @@ Use `webuild-it.com` as both:
 
 ## Phase Plan
 
-### Phase 1: Static Presence
+### Phase 1: Public Presence
 
-- static HTML deployed with Nginx;
+- semantic static HTML, CSS and vanilla JavaScript;
+- one small Go server for static delivery and the contact endpoint;
+- runtime-only SMTP credentials and delivery recipient;
 - ingress + TLS on the production cluster;
 - simple, fast, easy to cache.
+
+## Current Runtime
+
+The public site and contact API run in one non-root container behind the existing
+Service and Ingress. This keeps the topology unchanged while avoiding browser-side
+mail credentials or a separate backend workload.
+
+The server exposes:
+
+- `/` and `/assets/*` for the public page;
+- `POST /api/contact` for validated project requests;
+- `/healthz` for Kubernetes probes.
+
+The contact endpoint uses implicit TLS to reach the configured SMTP relay. SMTP
+identity, password, sender address and delivery recipient come from the
+namespace-local `webuild-it-contact` Secret. Missing configuration fails closed:
+the page remains available, but contact requests receive a useful unavailable
+response and are never reported as delivered.
+
+See [CONTACT.md](./CONTACT.md) for the security and runtime contract.
 
 ### Phase 2: Internal Dashboard
 

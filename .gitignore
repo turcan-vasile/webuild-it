@@ -3,6 +3,7 @@
 .env.*
 dist/
 node_modules/
+/var/
 # Local Codex guidance files
 /AGENTS.md
 /CODEX.md

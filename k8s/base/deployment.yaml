@@ -14,21 +14,44 @@ spec:
     spec:
       containers:
         - name: webuild-it
-          image: ghcr.io/turcan-vasile/webuild-it:latest
+          image: ghcr.io/turcan-vasile/webuild-it:sha-8ee4cce
           ports:
-            - containerPort: 80
+            - name: http
+              containerPort: 8080
+          env:
+            - name: SMTP_HOST
+              value: smtppro.zoho.eu
+            - name: SMTP_PORT
+              value: "465"
+            - name: SMTP_FROM_NAME
+              value: WeBuildit
+            - name: CONTACT_ALLOWED_ORIGINS
+              value: https://webuild-it.com,https://www.webuild-it.com
+            - name: TRUST_PROXY_HEADERS
+              value: "true"
+          envFrom:
+            - secretRef:
+                name: webuild-it-contact
+                optional: true
           readinessProbe:
             httpGet:
-              path: /
-              port: 80
+              path: /healthz
+              port: http
             initialDelaySeconds: 3
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /
-              port: 80
+              path: /healthz
+              port: http
             initialDelaySeconds: 10
             periodSeconds: 20
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
           resources:
             requests:
               cpu: 25m
